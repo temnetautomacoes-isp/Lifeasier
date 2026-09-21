@@ -19,10 +19,16 @@ import { OtherViews } from './features/other/OtherViews';
 import { NewRecordModal } from './components/modals/NewRecordModal';
 import { PixSettlementModal } from './components/modals/PixSettlementModal';
 import { SqlSchemaModal } from './components/modals/SqlSchemaModal';
+import { LoginView } from './features/auth/LoginView';
 
 export default function App() {
   const store = useAppStore();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Se o usuário não estiver autenticado, exibe a tela de login com seleção de painel
+  if (!store.isAuthenticated) {
+    return <LoginView store={store} />;
+  }
 
   const renderActiveView = () => {
     switch (store.activePage) {

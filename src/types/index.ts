@@ -1,5 +1,7 @@
 export type UserMode = 'individual' | 'couple';
 
+export type AuthEnvironment = 'personal' | 'studies';
+
 export type NavigationPage =
   | 'dashboard'
   | 'financas'

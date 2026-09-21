@@ -19,6 +19,7 @@ import {
   Users,
   Database,
   MoreVertical,
+  LogOut,
 } from 'lucide-react';
 import { AppStore } from '../../store/useAppStore';
 import { NavigationPage } from '../../types';
@@ -291,10 +292,27 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </nav>
           </div>
 
-          {/* User Profile Footer */}
-          <div className="p-3 bg-[#F2F4F6]/70 border-t border-[#E2E8F0]/70 mt-auto">
+          {/* User Profile Footer & Environment Badge */}
+          <div className="p-3 bg-[#F2F4F6]/70 border-t border-[#E2E8F0]/70 mt-auto space-y-2">
+            {/* Active Environment Indicator */}
+            <div className="flex items-center justify-between px-2 py-1 bg-white rounded-lg border border-[#E2E8F0]/70 text-[11px]">
+              <span className="text-[#64748B] font-semibold">Ambiente:</span>
+              <span
+                className={`font-bold px-2 py-0.5 rounded-md ${
+                  store.selectedEnvironment === 'studies'
+                    ? 'bg-blue-50 text-[#0051D5]'
+                    : 'bg-amber-50 text-[#D97706]'
+                }`}
+              >
+                {store.selectedEnvironment === 'studies' ? 'Painel Estudos' : 'Painel Pessoal'}
+              </span>
+            </div>
+
             <div className="flex items-center justify-between p-1.5 rounded-xl hover:bg-[#E6E8EA] transition-colors">
-              <div className="flex items-center gap-2.5 min-w-0">
+              <div
+                className="flex items-center gap-2.5 min-w-0 cursor-pointer"
+                onClick={() => navigateTo('configuracoes')}
+              >
                 <div className="relative shrink-0">
                   <img
                     alt="Lucas Silveira"
@@ -307,19 +325,22 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   <span className="text-xs font-bold text-[#0F172A] leading-tight truncate">
                     {store.profile.fullName}
                   </span>
-                  <span className="text-[11px] text-[#64748B] truncate max-w-[130px]">
+                  <span className="text-[11px] text-[#64748B] truncate max-w-[110px]">
                     {store.profile.email}
                   </span>
                 </div>
               </div>
-              <button
-                type="button"
-                onClick={() => navigateTo('configuracoes')}
-                className="text-[#64748B] hover:text-[#0F172A] p-1.5 rounded-lg hover:bg-[#ECEEF0] transition-colors"
-                title="Mais opções"
-              >
-                <MoreVertical size={16} />
-              </button>
+
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => store.logout()}
+                  className="text-[#64748B] hover:text-[#EF4444] p-1.5 rounded-lg hover:bg-rose-50 transition-colors"
+                  title="Sair / Trocar Painel"
+                >
+                  <LogOut size={16} />
+                </button>
+              </div>
             </div>
           </div>
         </div>

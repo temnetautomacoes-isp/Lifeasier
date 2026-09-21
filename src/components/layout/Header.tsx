@@ -12,6 +12,7 @@ import {
   GraduationCap,
   Target,
   CheckSquare,
+  LogOut,
 } from 'lucide-react';
 import { AppStore } from '../../store/useAppStore';
 
@@ -238,7 +239,7 @@ export const Header: React.FC<HeaderProps> = ({ store, onOpenMobileMenu }) => {
         <button
           type="button"
           onClick={() => setActivePage('configuracoes')}
-          className="relative rounded-full focus:outline-none focus:ring-2 focus:ring-[#FFE600]"
+          className="relative rounded-full focus:outline-none focus:ring-2 focus:ring-[#FFE600] cursor-pointer"
           title="Ver perfil e configurações"
         >
           <img
@@ -246,6 +247,16 @@ export const Header: React.FC<HeaderProps> = ({ store, onOpenMobileMenu }) => {
             className="w-8 h-8 rounded-full object-cover ring-2 ring-[#E2E8F0]"
             src={profile.avatarUrl}
           />
+        </button>
+
+        {/* Logout / Trocar Painel Button */}
+        <button
+          type="button"
+          onClick={() => store.logout()}
+          className="p-2 rounded-xl text-[#64748B] hover:text-[#EF4444] hover:bg-rose-50 transition-colors cursor-pointer"
+          title="Sair / Trocar de Painel"
+        >
+          <LogOut size={18} />
         </button>
       </div>
     </header>

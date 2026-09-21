@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import {
   UserMode,
+  AuthEnvironment,
   NavigationPage,
   UserProfile,
   Transaction,
@@ -515,6 +516,15 @@ const INITIAL_HABITS: HealthHabit[] = [
 ];
 
 export function useAppStore() {
+  // Authentication & Panel Environment
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    return localStorage.getItem('lifeasier_auth') === 'true';
+  });
+
+  const [selectedEnvironment, setSelectedEnvironment] = useState<AuthEnvironment>(() => {
+    return (localStorage.getItem('lifeasier_environment') as AuthEnvironment) || 'personal';
+  });
+
   // Global Mode: 'couple' by default (as seen in screenshots "Nosso (Casal)" active), or 'individual'
   const [userMode, setUserMode] = useState<UserMode>(() => {
     return (localStorage.getItem('lifeasier_user_mode') as UserMode) || 'couple';
@@ -551,6 +561,14 @@ export function useAppStore() {
   const [isSchemaModalOpen, setIsSchemaModalOpen] = useState(false);
 
   // Sync state with localStorage
+  useEffect(() => {
+    localStorage.setItem('lifeasier_auth', String(isAuthenticated));
+  }, [isAuthenticated]);
+
+  useEffect(() => {
+    localStorage.setItem('lifeasier_environment', selectedEnvironment);
+  }, [selectedEnvironment]);
+
   useEffect(() => {
     localStorage.setItem('lifeasier_user_mode', userMode);
   }, [userMode]);
@@ -657,6 +675,31 @@ export function useAppStore() {
     );
   };
 
+  const login = (options: { email?: string; password?: string; environment: AuthEnvironment }) => {
+    setSelectedEnvironment(options.environment);
+    setIsAuthenticated(true);
+    if (options.environment === 'studies') {
+      setActivePage('concurso');
+    } else {
+      setActivePage('dashboard');
+    }
+    return true;
+  };
+
+  const logout = () => {
+    setIsAuthenticated(false);
+    localStorage.removeItem('lifeasier_auth');
+  };
+
+  const switchEnvironment = (env: AuthEnvironment) => {
+    setSelectedEnvironment(env);
+    if (env === 'studies') {
+      setActivePage('concurso');
+    } else {
+      setActivePage('dashboard');
+    }
+  };
+
   // Filtered by userMode if applicable
   const displayTransactions = transactions.filter((tx) => {
     if (userMode === 'individual') {
@@ -702,6 +745,13 @@ export function useAppStore() {
     toggleRoutineItem,
     toggleHabit,
     contributeToGoal,
+    isAuthenticated,
+    setIsAuthenticated,
+    selectedEnvironment,
+    setSelectedEnvironment,
+    login,
+    logout,
+    switchEnvironment,
   };
 }
 
