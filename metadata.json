@@ -1,0 +1,6 @@
+{
+  "name": "Lifeasier",
+  "description": "Ecossistema integrado de organização pessoal, financeira e de estudos de alto rendimento.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
